@@ -14,7 +14,12 @@
     --alert: #a8402f;
     --diplo: #6b5a3a;
     --env: #3a5f6b;
-    --shadow: rgba(27, 36, 48, 0.08);
+    --ai: #5a4f9c;
+    --estate: #a06a2e;
+    --finance: #2f5f8a;
+    --shadow: rgba(27, 36, 48, 0.10);
+    --blob-1: rgba(58, 107, 92, 0.16);
+    --blob-2: rgba(90, 79, 156, 0.13);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -30,7 +35,12 @@
       --alert: #e08a78;
       --diplo: #cbb583;
       --env: #8ec2d1;
-      --shadow: rgba(0, 0, 0, 0.35);
+      --ai: #ac9fe0;
+      --estate: #e0ab6f;
+      --finance: #8fbde0;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --blob-1: rgba(123, 179, 159, 0.10);
+      --blob-2: rgba(172, 159, 224, 0.09);
     }
   }
 
@@ -46,10 +56,17 @@
     --alert: #e08a78;
     --diplo: #cbb583;
     --env: #8ec2d1;
-    --shadow: rgba(0, 0, 0, 0.35);
+    --ai: #ac9fe0;
+    --estate: #e0ab6f;
+    --finance: #8fbde0;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --blob-1: rgba(123, 179, 159, 0.10);
+    --blob-2: rgba(172, 159, 224, 0.09);
   }
 
   * { box-sizing: border-box; }
+
+  html { background: var(--bg); }
 
   body {
     background: var(--bg);
@@ -57,10 +74,55 @@
     font-family: 'Work Sans', system-ui, sans-serif;
     padding: 0;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .ambient span {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.9;
+  }
+
+  .ambient span:nth-child(1) {
+    width: 480px; height: 480px;
+    background: var(--blob-1);
+    top: -160px; left: -120px;
+    animation: drift1 26s ease-in-out infinite;
+  }
+
+  .ambient span:nth-child(2) {
+    width: 420px; height: 420px;
+    background: var(--blob-2);
+    top: 30%; right: -160px;
+    animation: drift2 32s ease-in-out infinite;
+  }
+
+  @keyframes drift1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(40px, 60px); }
+  }
+
+  @keyframes drift2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-50px, -40px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ambient span { animation: none; }
   }
 
   .wrap {
-    max-width: 920px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 28px 20px 60px;
   }
@@ -72,7 +134,7 @@
     gap: 16px;
     border-bottom: 2px solid var(--ink);
     padding-bottom: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 18px;
     flex-wrap: wrap;
   }
 
@@ -144,12 +206,73 @@
     font-variant-numeric: tabular-nums;
   }
 
+  nav.tabs {
+    position: relative;
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+
+  nav.tabs button {
+    appearance: none;
+    background: none;
+    border: none;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-dim);
+    padding: 10px 16px 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease;
+  }
+
+  nav.tabs button .he-tab {
+    font-family: 'Assistant', sans-serif;
+    direction: rtl;
+    font-size: 13px;
+  }
+
+  nav.tabs button[aria-selected="true"] {
+    color: var(--ink);
+  }
+
+  nav.tabs button:hover { color: var(--ink); }
+
+  .tab-indicator {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: left 0.28s cubic-bezier(.4,0,.2,1), width 0.28s cubic-bezier(.4,0,.2,1);
+  }
+
   .refresh-note {
     font-size: 12.5px;
     color: var(--ink-dim);
-    padding: 12px 0 22px;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 22px;
+    padding-bottom: 18px;
+    margin-bottom: 4px;
+  }
+
+  .panel { display: none; }
+  .panel.active {
+    display: block;
+    animation: fadeIn 0.32s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel.active { animation: none; }
   }
 
   .col-heads {
@@ -182,11 +305,16 @@
     display: grid;
     grid-template-columns: 76px 1fr 1fr;
     gap: 24px;
-    padding: 20px 0;
+    padding: 20px 10px;
+    margin: 0 -10px;
     border-bottom: 1px solid var(--rule);
+    border-radius: 8px;
+    transition: background 0.2s ease;
   }
 
-  .item:first-child { padding-top: 4px; }
+  .item:hover { background: var(--surface); }
+
+  .item:first-child { padding-top: 14px; }
   .item:last-child { border-bottom: none; }
 
   .item-time {
@@ -230,6 +358,9 @@
   .tag.security { background: var(--alert); }
   .tag.diplomacy { background: var(--diplo); }
   .tag.environment { background: var(--env); }
+  .tag.ai { background: var(--ai); }
+  .tag.estate { background: var(--estate); }
+  .tag.finance { background: var(--finance); }
 
   .headline {
     font-family: 'Fraunces', Georgia, serif;
@@ -319,6 +450,8 @@
   }
 </style>
 
+<div class="ambient"><span></span><span></span></div>
+
 <div class="wrap">
   <header>
     <div class="brand">
@@ -332,6 +465,14 @@
     </div>
   </header>
 
+  <nav class="tabs" id="tabs">
+    <button data-panel="today" aria-selected="true">Today <span class="he-tab">היום</span></button>
+    <button data-panel="ai" aria-selected="false">AI <span class="he-tab">בינה מלאכותית</span></button>
+    <button data-panel="estate" aria-selected="false">Real Estate <span class="he-tab">נדל"ן</span></button>
+    <button data-panel="finance" aria-selected="false">Finance <span class="he-tab">פיננסים</span></button>
+    <span class="tab-indicator" id="tab-indicator"></span>
+  </nav>
+
   <p class="refresh-note">
     Pulled from live search roughly every 30 minutes while this session runs, in English and Hebrew side by side. If updates stop arriving, the session behind it has closed.
   </p>
@@ -342,108 +483,292 @@
     <span class="he-label">עברית</span>
   </div>
 
-  <div class="feed" id="feed">
+  <!-- TODAY -->
+  <section class="panel active" id="panel-today">
+    <div class="feed">
 
-    <article class="item">
-      <div class="item-time">now<br>S.&nbsp;Lebanon</div>
-      <div class="lang-block en">
-        <span class="tag security">Security</span>
-        <h2 class="headline">Israeli strikes hit Nabatieh and Tyre districts, killing two on a motorcycle</h2>
-        <p class="summary">Lebanon's state news agency reported a strike killed two in Kfar Reman near the Ali al-Taher ridge, with Israeli raids and artillery hitting seven towns — the strikes the IDF had warned were coming.</p>
-        <p class="source-line">Al Jazeera — <a href="https://www.aljazeera.com/news/2026/9/4/israeli-strike-kills-two-in-southern-lebanon-amid-ongoing-escalation" target="_blank" rel="noopener">read the report</a></p>
-      </div>
-      <div class="lang-block he">
-        <span class="tag security">ביטחון</span>
-        <h2 class="headline">תקיפות ישראליות פגעו במחוזות נבטיה וצור, שניים נהרגו על אופנוע</h2>
-        <p class="summary">סוכנות הידיעות הרשמית של לבנון מדווחת כי תקיפה הרגה שניים בכפר רמאן ליד רכס עלי א-טאהר, ופשיטות וארטילריה ישראליות פגעו בשבעה יישובים — אלה התקיפות שעליהן הזהיר צה"ל.</p>
-        <p class="source-line">אל-ג'זירה — <a href="https://www.aljazeera.com/news/2026/9/4/israeli-strike-kills-two-in-southern-lebanon-amid-ongoing-escalation" target="_blank" rel="noopener">הכתבה המלאה</a></p>
-      </div>
-    </article>
+      <article class="item">
+        <div class="item-time">now<br>S.&nbsp;Lebanon</div>
+        <div class="lang-block en">
+          <span class="tag security">Security</span>
+          <h2 class="headline">Israeli strikes hit Nabatieh and Tyre districts, killing two on a motorcycle</h2>
+          <p class="summary">Lebanon's state news agency reported a strike killed two in Kfar Reman near the Ali al-Taher ridge, with Israeli raids and artillery hitting seven towns — the strikes the IDF had warned were coming.</p>
+          <p class="source-line">Al Jazeera — <a href="https://www.aljazeera.com/news/2026/9/4/israeli-strike-kills-two-in-southern-lebanon-amid-ongoing-escalation" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag security">ביטחון</span>
+          <h2 class="headline">תקיפות ישראליות פגעו במחוזות נבטיה וצור, שניים נהרגו על אופנוע</h2>
+          <p class="summary">סוכנות הידיעות הרשמית של לבנון מדווחת כי תקיפה הרגה שניים בכפר רמאן ליד רכס עלי א-טאהר, ופשיטות וארטילריה ישראליות פגעו בשבעה יישובים — אלה התקיפות שעליהן הזהיר צה"ל.</p>
+          <p class="source-line">אל-ג'זירה — <a href="https://www.aljazeera.com/news/2026/9/4/israeli-strike-kills-two-in-southern-lebanon-amid-ongoing-escalation" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
 
-    <article class="item">
-      <div class="item-time">04&nbsp;Sep<br>evening</div>
-      <div class="lang-block en">
-        <span class="tag diplomacy">Diplomacy</span>
-        <h2 class="headline">Netanyahu says overthrow of Iran's government is "within reach"</h2>
-        <p class="summary">The PM said toppling Iran's regime is Israel's central remaining task, calling it achievable as the US resumes strikes and Iran shows signs of weakness.</p>
-        <p class="source-line">RFE/RL — <a href="https://www.globalsecurity.org/wmd/library/news/iran/2026/09/iran-260903-rferl03.htm" target="_blank" rel="noopener">read the report</a></p>
-      </div>
-      <div class="lang-block he">
-        <span class="tag diplomacy">דיפלומטיה</span>
-        <h2 class="headline">נתניהו: הפלת המשטר באיראן "בהישג יד"</h2>
-        <p class="summary">ראש הממשלה אמר כי הפלת המשטר באיראן היא המשימה המרכזית הנותרת לישראל, וכינה זאת בר-השגה לנוכח חידוש התקיפות האמריקאיות וסימני חולשה איראניים.</p>
-        <p class="source-line">RFE/RL — <a href="https://www.globalsecurity.org/wmd/library/news/iran/2026/09/iran-260903-rferl03.htm" target="_blank" rel="noopener">הכתבה המלאה</a></p>
-      </div>
-    </article>
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>evening</div>
+        <div class="lang-block en">
+          <span class="tag diplomacy">Diplomacy</span>
+          <h2 class="headline">Netanyahu says overthrow of Iran's government is "within reach"</h2>
+          <p class="summary">The PM said toppling Iran's regime is Israel's central remaining task, calling it achievable as the US resumes strikes and Iran shows signs of weakness.</p>
+          <p class="source-line">RFE/RL — <a href="https://www.globalsecurity.org/wmd/library/news/iran/2026/09/iran-260903-rferl03.htm" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag diplomacy">דיפלומטיה</span>
+          <h2 class="headline">נתניהו: הפלת המשטר באיראן "בהישג יד"</h2>
+          <p class="summary">ראש הממשלה אמר כי הפלת המשטר באיראן היא המשימה המרכזית הנותרת לישראל, וכינה זאת בר-השגה לנוכח חידוש התקיפות האמריקאיות וסימני חולשה איראניים.</p>
+          <p class="source-line">RFE/RL — <a href="https://www.globalsecurity.org/wmd/library/news/iran/2026/09/iran-260903-rferl03.htm" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
 
-    <article class="item">
-      <div class="item-time">04&nbsp;Sep<br>Gaza</div>
-      <div class="lang-block en">
-        <span class="tag security">Security</span>
-        <h2 class="headline">IDF and Shin Bet eliminate Nukhba commander who led Oct. 7 attack on Sufa outpost</h2>
-        <p class="summary">The commander had been rebuilding Hamas's military capabilities and directing attacks on troops and civilians in violation of the ceasefire, the military said.</p>
-        <p class="source-line">VINnews — <a href="https://vinnews.com/2026/09/04/idf-isa-eliminate-hamas-nukhba-commander-who-led-oct-7-attack-on-sufa-outpost/" target="_blank" rel="noopener">read the report</a></p>
-      </div>
-      <div class="lang-block he">
-        <span class="tag security">ביטחון</span>
-        <h2 class="headline">צה"ל ושב"כ חיסלו מפקד ניצחבה שהוביל את פשיטת סופה ב-7 באוקטובר</h2>
-        <p class="summary">לפי הצבא, המפקד פעל לשיקום היכולות הצבאיות של חמאס וכיוון פיגועים נגד חיילים ואזרחים בניגוד להפסקת האש.</p>
-        <p class="source-line">VINnews — <a href="https://vinnews.com/2026/09/04/idf-isa-eliminate-hamas-nukhba-commander-who-led-oct-7-attack-on-sufa-outpost/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
-      </div>
-    </article>
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>Gaza</div>
+        <div class="lang-block en">
+          <span class="tag security">Security</span>
+          <h2 class="headline">IDF and Shin Bet eliminate Nukhba commander who led Oct. 7 attack on Sufa outpost</h2>
+          <p class="summary">The commander had been rebuilding Hamas's military capabilities and directing attacks on troops and civilians in violation of the ceasefire, the military said.</p>
+          <p class="source-line">VINnews — <a href="https://vinnews.com/2026/09/04/idf-isa-eliminate-hamas-nukhba-commander-who-led-oct-7-attack-on-sufa-outpost/" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag security">ביטחון</span>
+          <h2 class="headline">צה"ל ושב"כ חיסלו מפקד ניצחבה שהוביל את פשיטת סופה ב-7 באוקטובר</h2>
+          <p class="summary">לפי הצבא, המפקד פעל לשיקום היכולות הצבאיות של חמאס וכיוון פיגועים נגד חיילים ואזרחים בניגוד להפסקת האש.</p>
+          <p class="source-line">VINnews — <a href="https://vinnews.com/2026/09/04/idf-isa-eliminate-hamas-nukhba-commander-who-led-oct-7-attack-on-sufa-outpost/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
 
-    <article class="item">
-      <div class="item-time">04&nbsp;Sep<br>S. Lebanon</div>
-      <div class="lang-block en">
-        <span class="tag security">Security</span>
-        <h2 class="headline">IDF clears Hezbollah tunnels under key Ali al-Taher ridge</h2>
-        <p class="summary">Katz says troops cleared two decades-old underground complexes — command rooms, weapons stores, living quarters — that served as a Hezbollah command center; Israel says it will stay until Hezbollah disarms.</p>
-        <p class="source-line">Times of Israel — <a href="https://www.timesofisrael.com/idf-says-it-entered-cleared-hezbollahs-ali-taher-ridge-tunnels-ahead-of-demolition/" target="_blank" rel="noopener">read the report</a></p>
-      </div>
-      <div class="lang-block he">
-        <span class="tag security">ביטחון</span>
-        <h2 class="headline">צה"ל טיהר מנהרות חיזבאללה ברכס עלי א-טאהר</h2>
-        <p class="summary">כ"ץ: הכוחות טיהרו שני מתחמי מנהרות בני כעשרים שנה — חדרי פיקוד, מחסני נשק ומגורים — ששימשו כמרכז פיקוד של חיזבאללה; ישראל תישאר במקום עד לפירוק נשק הארגון.</p>
-        <p class="source-line">טיימס אוף ישראל — <a href="https://www.timesofisrael.com/idf-says-it-entered-cleared-hezbollahs-ali-taher-ridge-tunnels-ahead-of-demolition/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
-      </div>
-    </article>
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>S. Lebanon</div>
+        <div class="lang-block en">
+          <span class="tag security">Security</span>
+          <h2 class="headline">IDF clears Hezbollah tunnels under key Ali al-Taher ridge</h2>
+          <p class="summary">Katz says troops cleared two decades-old underground complexes — command rooms, weapons stores, living quarters — that served as a Hezbollah command center; Israel says it will stay until Hezbollah disarms.</p>
+          <p class="source-line">Times of Israel — <a href="https://www.timesofisrael.com/idf-says-it-entered-cleared-hezbollahs-ali-taher-ridge-tunnels-ahead-of-demolition/" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag security">ביטחון</span>
+          <h2 class="headline">צה"ל טיהר מנהרות חיזבאללה ברכס עלי א-טאהר</h2>
+          <p class="summary">כ"ץ: הכוחות טיהרו שני מתחמי מנהרות בני כעשרים שנה — חדרי פיקוד, מחסני נשק ומגורים — ששימשו כמרכז פיקוד של חיזבאללה; ישראל תישאר במקום עד לפירוק נשק הארגון.</p>
+          <p class="source-line">טיימס אוף ישראל — <a href="https://www.timesofisrael.com/idf-says-it-entered-cleared-hezbollahs-ali-taher-ridge-tunnels-ahead-of-demolition/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
 
-    <article class="item">
-      <div class="item-time">04&nbsp;Sep<br>West&nbsp;Bank</div>
-      <div class="lang-block en">
-        <span class="tag">West Bank</span>
-        <h2 class="headline">Settler attacks reported across three West Bank locations</h2>
-        <p class="summary">Farmland was torched near al-Mughayyir and a Palestinian convoy attacked en route to a condolence visit; tear gas and home raids hit Bedouin hamlets in the Jordan Valley.</p>
-        <p class="source-line">Times of Israel — <a href="https://www.timesofisrael.com/liveblog-september-04-2026/" target="_blank" rel="noopener">live blog</a></p>
-      </div>
-      <div class="lang-block he">
-        <span class="tag">הגדה המערבית</span>
-        <h2 class="headline">אלימות מתנחלים דווחה בשלושה אתרים בגדה המערבית</h2>
-        <p class="summary">שדות הוצתו ליד אל-מע'יר ושיירה פלסטינית הותקפה בדרכה לביקור ניחומים; גז מדמיע ופשיטות בתים פגעו ביישובים בדואים בבקעת הירדן.</p>
-        <p class="source-line">טיימס אוף ישראל — <a href="https://www.timesofisrael.com/liveblog-september-04-2026/" target="_blank" rel="noopener">בלוג חי</a></p>
-      </div>
-    </article>
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>West&nbsp;Bank</div>
+        <div class="lang-block en">
+          <span class="tag">West Bank</span>
+          <h2 class="headline">Settler attacks reported across three West Bank locations</h2>
+          <p class="summary">Farmland was torched near al-Mughayyir and a Palestinian convoy attacked en route to a condolence visit; tear gas and home raids hit Bedouin hamlets in the Jordan Valley.</p>
+          <p class="source-line">Times of Israel — <a href="https://www.timesofisrael.com/liveblog-september-04-2026/" target="_blank" rel="noopener">live blog</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag">הגדה המערבית</span>
+          <h2 class="headline">אלימות מתנחלים דווחה בשלושה אתרים בגדה המערבית</h2>
+          <p class="summary">שדות הוצתו ליד אל-מע'יר ושיירה פלסטינית הותקפה בדרכה לביקור ניחומים; גז מדמיע ופשיטות בתים פגעו ביישובים בדואים בבקעת הירדן.</p>
+          <p class="source-line">טיימס אוף ישראל — <a href="https://www.timesofisrael.com/liveblog-september-04-2026/" target="_blank" rel="noopener">בלוג חי</a></p>
+        </div>
+      </article>
 
-    <article class="item">
-      <div class="item-time">04&nbsp;Sep<br>Jerusalem</div>
-      <div class="lang-block en">
-        <span class="tag security">Security</span>
-        <h2 class="headline">Police shoot dead Palestinian man in Old City after alleged stabbing attempt</h2>
-        <p class="summary">Officers opened fire after the man allegedly tried to stab security forces near Jerusalem's Old City; no Israeli casualties were reported.</p>
-        <p class="source-line">Haaretz — <a href="https://www.haaretz.com/israel-news/israel-security/2026-09-04/ty-article-live/police-terrorist-neutralized-after-trying-to-attack-forces-in-jlem-old-city/000001a0-6a21-d1e9-ade0-fbf343520000" target="_blank" rel="noopener">read the report</a></p>
-      </div>
-      <div class="lang-block he">
-        <span class="tag security">ביטחון</span>
-        <h2 class="headline">המשטרה ירתה למוות פלסטיני בעיר העתיקה לאחר ניסיון דקירה</h2>
-        <p class="summary">השוטרים פתחו באש לאחר שהחשוד ניסה, לפי הדיווחים, לדקור כוחות ביטחון סמוך לעיר העתיקה בירושלים; לא דווח על נפגעים ישראלים.</p>
-        <p class="source-line">הארץ — <a href="https://www.haaretz.com/israel-news/israel-security/2026-09-04/ty-article-live/police-terrorist-neutralized-after-trying-to-attack-forces-in-jlem-old-city/000001a0-6a21-d1e9-ade0-fbf343520000" target="_blank" rel="noopener">הכתבה המלאה</a></p>
-      </div>
-    </article>
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>Jerusalem</div>
+        <div class="lang-block en">
+          <span class="tag security">Security</span>
+          <h2 class="headline">Police shoot dead Palestinian man in Old City after alleged stabbing attempt</h2>
+          <p class="summary">Officers opened fire after the man allegedly tried to stab security forces near Jerusalem's Old City; no Israeli casualties were reported.</p>
+          <p class="source-line">Haaretz — <a href="https://www.haaretz.com/israel-news/israel-security/2026-09-04/ty-article-live/police-terrorist-neutralized-after-trying-to-attack-forces-in-jlem-old-city/000001a0-6a21-d1e9-ade0-fbf343520000" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag security">ביטחון</span>
+          <h2 class="headline">המשטרה ירתה למוות פלסטיני בעיר העתיקה לאחר ניסיון דקירה</h2>
+          <p class="summary">השוטרים פתחו באש לאחר שהחשוד ניסה, לפי הדיווחים, לדקור כוחות ביטחון סמוך לעיר העתיקה בירושלים; לא דווח על נפגעים ישראלים.</p>
+          <p class="source-line">הארץ — <a href="https://www.haaretz.com/israel-news/israel-security/2026-09-04/ty-article-live/police-terrorist-neutralized-after-trying-to-attack-forces-in-jlem-old-city/000001a0-6a21-d1e9-ade0-fbf343520000" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
 
-  </div>
+    </div>
+  </section>
+
+  <!-- AI -->
+  <section class="panel" id="panel-ai">
+    <div class="feed">
+
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>industry</div>
+        <div class="lang-block en">
+          <span class="tag ai">Models</span>
+          <h2 class="headline">OpenAI begins staged rollout of GPT-6 Astra</h2>
+          <p class="summary">The model ships with a 1.05M-token context window and reports strong coding and reasoning benchmarks, priced at $10/$50 per million tokens.</p>
+          <p class="source-line">llm-stats.com — <a href="https://llm-stats.com/ai-news" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag ai">מודלים</span>
+          <h2 class="headline">OpenAI פותחת בהשקה מדורגת של GPT-6 Astra</h2>
+          <p class="summary">המודל מגיע עם חלון הקשר של 1.05 מיליון טוקנים ומדווח על ביצועים חזקים בקוד ובהיסק, במחיר 10$/50$ למיליון טוקנים.</p>
+          <p class="source-line">llm-stats.com — <a href="https://llm-stats.com/ai-news" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+      <article class="item">
+        <div class="item-time">01&nbsp;Sep<br>industry</div>
+        <div class="lang-block en">
+          <span class="tag ai">Models</span>
+          <h2 class="headline">Anthropic's Fable 5.1 reaches general availability</h2>
+          <p class="summary">Released at the same $10/$50 pricing as Fable 5, with cached-token reads cut to $0.25 and a large jump in self-reported science-benchmark scores.</p>
+          <p class="source-line">AI Weekly — <a href="https://aiweekly.co/ai-news-today/anthropic-news" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag ai">מודלים</span>
+          <h2 class="headline">Fable 5.1 של אנתרופיק יוצא לזמינות כללית</h2>
+          <p class="summary">יצא באותו תמחור של 10$/50$ כמו Fable 5, עם הוזלת קריאת טוקנים במטמון ל-0.25$ וקפיצה משמעותית בציוני בנצ'מארק מדעי שדווחו על ידי החברה.</p>
+          <p class="source-line">AI Weekly — <a href="https://aiweekly.co/ai-news-today/anthropic-news" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+      <article class="item">
+        <div class="item-time">27&nbsp;Aug<br>policy</div>
+        <div class="lang-block en">
+          <span class="tag">Security</span>
+          <h2 class="headline">100+ AI firms, including OpenAI, Anthropic and Google, sign pact on rogue-AI defense</h2>
+          <p class="summary">The companies called for coordinated private- and public-sector action to defend against AI-related cyber threats.</p>
+          <p class="source-line">TechCrunch — <a href="https://techcrunch.com/2026/08/27/openai-anthropic-google-and-100-other-companies-call-for-action-to-defend-against-rogue-ai/" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag">ביטחון</span>
+          <h2 class="headline">יותר מ-100 חברות בינה מלאכותית, כולל OpenAI, אנתרופיק וגוגל, חתמו על הסכם הגנה מפני AI סורר</h2>
+          <p class="summary">החברות קראו לפעולה מתואמת של המגזר הפרטי והציבורי כדי להתגונן מפני איומי סייבר הקשורים ל-AI.</p>
+          <p class="source-line">TechCrunch — <a href="https://techcrunch.com/2026/08/27/openai-anthropic-google-and-100-other-companies-call-for-action-to-defend-against-rogue-ai/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+      <article class="item">
+        <div class="item-time">late&nbsp;Aug<br>investment</div>
+        <div class="lang-block en">
+          <span class="tag finance">Investment</span>
+          <h2 class="headline">Google commits $40B more in AI cloud capacity at $350B valuation</h2>
+          <p class="summary">The deal adds 5GW of cloud capacity over five years; it followed a $25B matching commitment from Amazon days earlier.</p>
+          <p class="source-line">Industry roundup — see AI wire above for sourcing</p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag finance">השקעה</span>
+          <h2 class="headline">גוגל מתחייבת ל-40 מיליארד דולר נוספים בתשתית ענן ל-AI, לפי שווי של 350 מיליארד דולר</h2>
+          <p class="summary">העסקה מוסיפה 5 גיגה-וואט של קיבולת ענן על פני חמש שנים; היא הגיעה ימים אחדים אחרי התחייבות מקבילה של אמזון בסך 25 מיליארד דולר.</p>
+          <p class="source-line">סיכום ענפי — ראו מקורות בגרסה האנגלית</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- REAL ESTATE -->
+  <section class="panel" id="panel-estate">
+    <div class="feed">
+
+      <article class="item">
+        <div class="item-time">2026<br>national</div>
+        <div class="lang-block en">
+          <span class="tag estate">Market</span>
+          <h2 class="headline">Housing market rebalances: over 80,000 new apartments sit unsold</h2>
+          <p class="summary">Prices have flattened to roughly 0% year-on-year growth after years of double-digit gains, even as overseas buyers keep placing large bets, especially in Jerusalem.</p>
+          <p class="source-line">Sands of Wealth — <a href="https://sandsofwealth.com/blogs/news/israel-real-estate-market" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag estate">שוק</span>
+          <h2 class="headline">שוק הדיור מתאזן: מעל 80,000 דירות חדשות עומדות ללא קונים</h2>
+          <p class="summary">המחירים התייצבו סביב עלייה שנתית של כ-0% אחרי שנים של עליות דו-ספרתיות, בעוד קונים מחו"ל ממשיכים להשקיע סכומים גדולים, בעיקר בירושלים.</p>
+          <p class="source-line">Sands of Wealth — <a href="https://sandsofwealth.com/blogs/news/israel-real-estate-market" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+      <article class="item">
+        <div class="item-time">2026<br>pricing</div>
+        <div class="lang-block en">
+          <span class="tag estate">Pricing</span>
+          <h2 class="headline">Buyers gain negotiating room as homes sell below asking</h2>
+          <p class="summary">Most residential deals close 2%-5% under list price, with larger discounts on new-build units once incentives are counted; typical time-to-contract runs 60-120 days.</p>
+          <p class="source-line">Semerenko Group — <a href="https://semerenkogroup.com/israel-real-estate-market-hits-a-strange-new-phase/" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag estate">תמחור</span>
+          <h2 class="headline">לקונים יש יותר מרחב מיקוח כשדירות נמכרות מתחת למחיר המבוקש</h2>
+          <p class="summary">רוב העסקות למגורים נסגרות 2%-5% מתחת למחיר המבוקש, עם הנחות גדולות יותר בפרויקטים חדשים לאחר חישוב ההטבות; זמן הסגירה הטיפוסי הוא 60-120 יום.</p>
+          <p class="source-line">Semerenko Group — <a href="https://semerenkogroup.com/israel-real-estate-market-hits-a-strange-new-phase/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+      <article class="item">
+        <div class="item-time">2026<br>Jerusalem</div>
+        <div class="lang-block en">
+          <span class="tag estate">Infrastructure</span>
+          <h2 class="headline">Jerusalem's Green Line light rail set to open first section</h2>
+          <p class="summary">The 20km route from Gilo to Mount Scopus is expected to lift property values in neighborhoods along its path once the first section opens.</p>
+          <p class="source-line">Times of Israel — <a href="https://www.timesofisrael.com/after-wartime-slump-israels-housing-market-is-ready-for-a-reset-in-2026-agents-say/" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag estate">תשתיות</span>
+          <h2 class="headline">הרכבת הקלה של הקו הירוק בירושלים צפויה לפתוח את קטעה הראשון</h2>
+          <p class="summary">המסלול באורך 20 ק"מ מגילה להר הצופים צפוי להעלות את ערכי הנכסים בשכונות שלאורכו עם פתיחת הקטע הראשון.</p>
+          <p class="source-line">טיימס אוף ישראל — <a href="https://www.timesofisrael.com/after-wartime-slump-israels-housing-market-is-ready-for-a-reset-in-2026-agents-say/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- FINANCE -->
+  <section class="panel" id="panel-finance">
+    <div class="feed">
+
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>currency</div>
+        <div class="lang-block en">
+          <span class="tag finance">Currency</span>
+          <h2 class="headline">Shekel hits 30-year high against the dollar</h2>
+          <p class="summary">The shekel touched 2.90 to the dollar — its strongest since 1993 — up 9% year-to-date, backed by $39B in 2025 foreign investment.</p>
+          <p class="source-line">Capmad — <a href="https://www.capmad.com/post/shekel-at-30-year-high-israels-economy-defies-wartime-gravity" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag finance">מטבע</span>
+          <h2 class="headline">השקל בשיא של 30 שנה מול הדולר</h2>
+          <p class="summary">השקל נגע ב-2.90 לדולר — הרמה החזקה ביותר מאז 1993 — עלייה של 9% מתחילת השנה, בגיבוי 39 מיליארד דולר בהשקעות זרות ב-2025.</p>
+          <p class="source-line">Capmad — <a href="https://www.capmad.com/post/shekel-at-30-year-high-israels-economy-defies-wartime-gravity" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+      <article class="item">
+        <div class="item-time">04&nbsp;Sep<br>markets</div>
+        <div class="lang-block en">
+          <span class="tag finance">Markets</span>
+          <h2 class="headline">TA-125 closes at 4,194, up nearly 33% year-on-year</h2>
+          <p class="summary">The Tel Aviv index gained 0.59% on the session and 4.25% over the past month; total equity market cap on the exchange stands near NIS 2.4 trillion.</p>
+          <p class="source-line">Trading Economics — <a href="https://tradingeconomics.com/israel/stock-market" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag finance">שווקים</span>
+          <h2 class="headline">מדד ת"א-125 ננעל על 4,194 נקודות, זינוק של כמעט 33% מתחילת השנה שעברה</h2>
+          <p class="summary">המדד עלה 0.59% במסחר וב-4.25% בחודש האחרון; שווי השוק הכולל של המניות בבורסה עומד על כ-2.4 טריליון שקל.</p>
+          <p class="source-line">Trading Economics — <a href="https://tradingeconomics.com/israel/stock-market" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+      <article class="item">
+        <div class="item-time">2026<br>outlook</div>
+        <div class="lang-block en">
+          <span class="tag finance">Growth</span>
+          <h2 class="headline">Bank of Israel, IMF see growth outpacing every G7 economy</h2>
+          <p class="summary">Forecasts put 2026 growth at 3.5%-3.8%, ahead of the US (2.3%) and euro area (1.3%), driven by tech exports, defense and energy.</p>
+          <p class="source-line">CNBC — <a href="https://www.cnbc.com/2026/04/30/israel-economy-stock-market-tel-aviv-trump-netanyahu-gdp-us-inflation.html" target="_blank" rel="noopener">read the report</a></p>
+        </div>
+        <div class="lang-block he">
+          <span class="tag finance">צמיחה</span>
+          <h2 class="headline">בנק ישראל וקרן המטבע צופים צמיחה מהירה מכל מדינות ה-G7</h2>
+          <p class="summary">התחזיות מציבות את הצמיחה ל-2026 בין 3.5% ל-3.8%, לפני ארה"ב (2.3%) וגוש האירו (1.3%), בהובלת יצוא הייטק, ביטחון ואנרגיה.</p>
+          <p class="source-line">CNBC — <a href="https://www.cnbc.com/2026/04/30/israel-economy-stock-market-tel-aviv-trump-netanyahu-gdp-us-inflation.html" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+        </div>
+      </article>
+
+    </div>
+  </section>
 
   <footer>
-    <span>Sources: Haaretz, Times of Israel, Jerusalem Post, RFE/RL, VINnews</span>
+    <span id="footer-sources">Sources: Haaretz, Times of Israel, Jerusalem Post, RFE/RL, VINnews</span>
     <span id="clock"></span>
   </footer>
 </div>
@@ -457,4 +782,42 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  var sources = {
+    today: 'Sources: Haaretz, Times of Israel, Jerusalem Post, RFE/RL, VINnews',
+    ai: 'Sources: TechCrunch, AI Weekly, llm-stats.com',
+    estate: 'Sources: Times of Israel, Sands of Wealth, Semerenko Group',
+    finance: 'Sources: Trading Economics, CNBC, Capmad'
+  };
+
+  var tabs = document.querySelectorAll('#tabs button');
+  var indicator = document.getElementById('tab-indicator');
+  var tabsNav = document.getElementById('tabs');
+
+  function moveIndicator(btn) {
+    var navRect = tabsNav.getBoundingClientRect();
+    var btnRect = btn.getBoundingClientRect();
+    indicator.style.left = (btnRect.left - navRect.left) + 'px';
+    indicator.style.width = btnRect.width + 'px';
+  }
+
+  function selectTab(btn) {
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+    btn.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+    document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+    document.getElementById('footer-sources').textContent = sources[btn.dataset.panel] || '';
+    moveIndicator(btn);
+  }
+
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () { selectTab(btn); });
+  });
+
+  window.addEventListener('resize', function () {
+    var active = document.querySelector('#tabs button[aria-selected="true"]');
+    if (active) moveIndicator(active);
+  });
+
+  moveIndicator(tabs[0]);
 </script>
