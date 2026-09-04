@@ -1,0 +1,460 @@
+<title>Israel Now</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Frank+Ruhl+Libre:wght@500;600&family=Assistant:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #eef0ea;
+    --surface: #ffffff;
+    --surface-2: #e4e7dd;
+    --ink: #1b2430;
+    --ink-dim: #52605c;
+    --rule: #d3d7c9;
+    --accent: #3a6b5c;
+    --accent-ink: #ffffff;
+    --alert: #a8402f;
+    --diplo: #6b5a3a;
+    --env: #3a5f6b;
+    --shadow: rgba(27, 36, 48, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12181a;
+      --surface: #1b2420;
+      --surface-2: #223028;
+      --ink: #e9e8e0;
+      --ink-dim: #a3ac9f;
+      --rule: #33413a;
+      --accent: #7bb39f;
+      --accent-ink: #0f1613;
+      --alert: #e08a78;
+      --diplo: #cbb583;
+      --env: #8ec2d1;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #12181a;
+    --surface: #1b2420;
+    --surface-2: #223028;
+    --ink: #e9e8e0;
+    --ink-dim: #a3ac9f;
+    --rule: #33413a;
+    --accent: #7bb39f;
+    --accent-ink: #0f1613;
+    --alert: #e08a78;
+    --diplo: #cbb583;
+    --env: #8ec2d1;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', system-ui, sans-serif;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2.2s ease-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot { animation: none; }
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+    70%  { box-shadow: 0 0 0 7px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 34px;
+    letter-spacing: -0.01em;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    text-wrap: balance;
+  }
+
+  h1 .he {
+    font-family: 'Frank Ruhl Libre', 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink-dim);
+    direction: rtl;
+  }
+
+  .meta {
+    text-align: right;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+  }
+
+  .meta strong {
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .refresh-note {
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    padding: 12px 0 22px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 22px;
+  }
+
+  .col-heads {
+    display: grid;
+    grid-template-columns: 76px 1fr 1fr;
+    gap: 24px;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+  }
+
+  .col-heads span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+
+  .col-heads span.he-label {
+    text-align: right;
+    direction: rtl;
+  }
+
+  .feed {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 76px 1fr 1fr;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .item:first-child { padding-top: 4px; }
+  .item:last-child { border-bottom: none; }
+
+  .item-time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    padding-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lang-block.en {
+    padding-right: 12px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .lang-block.he {
+    direction: rtl;
+    text-align: right;
+    padding-left: 0;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    color: var(--accent-ink);
+    background: var(--accent);
+  }
+
+  .lang-block.he .tag {
+    font-family: 'Assistant', sans-serif;
+    letter-spacing: 0;
+    direction: rtl;
+  }
+
+  .tag.security { background: var(--alert); }
+  .tag.diplomacy { background: var(--diplo); }
+  .tag.environment { background: var(--env); }
+
+  .headline {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.32;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+
+  .lang-block.he .headline {
+    font-family: 'Frank Ruhl Libre', 'Times New Roman', serif;
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .summary {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-dim);
+    margin: 0 0 8px;
+    max-width: 42ch;
+  }
+
+  .lang-block.he .summary {
+    font-family: 'Assistant', sans-serif;
+    font-size: 14.5px;
+    max-width: 42ch;
+    margin-left: auto;
+  }
+
+  .source-line {
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+
+  .lang-block.he .source-line {
+    font-family: 'Assistant', sans-serif;
+  }
+
+  .source-line a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+
+  .source-line a:hover,
+  .source-line a:focus-visible {
+    border-bottom-color: var(--accent);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  footer {
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--ink-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 720px) {
+    .col-heads { display: none; }
+    .item { grid-template-columns: 1fr; gap: 10px; }
+    .item-time { order: -1; }
+    .lang-block.en {
+      padding-right: 0;
+      border-right: none;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .summary, .lang-block.he .summary { max-width: none; }
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 25px; flex-direction: column; align-items: flex-start; gap: 2px; }
+    h1 .he { font-size: 20px; }
+    header { flex-direction: column; align-items: flex-start; }
+    .meta { text-align: left; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="eyebrow"><span class="dot"></span> Live wire</span>
+      <h1>Israel Now <span class="he">ישראל עכשיו</span></h1>
+    </div>
+    <div class="meta">
+      Last update<br>
+      <strong id="updated-at">22:40 UTC</strong><br>
+      <span id="ago"></span>
+    </div>
+  </header>
+
+  <p class="refresh-note">
+    Pulled from live search roughly every 30 minutes while this session runs, in English and Hebrew side by side. If updates stop arriving, the session behind it has closed.
+  </p>
+
+  <div class="col-heads">
+    <span></span>
+    <span>English</span>
+    <span class="he-label">עברית</span>
+  </div>
+
+  <div class="feed" id="feed">
+
+    <article class="item">
+      <div class="item-time">now<br>S.&nbsp;Lebanon</div>
+      <div class="lang-block en">
+        <span class="tag security">Security</span>
+        <h2 class="headline">Israeli strikes hit Nabatieh and Tyre districts, killing two on a motorcycle</h2>
+        <p class="summary">Lebanon's state news agency reported a strike killed two in Kfar Reman near the Ali al-Taher ridge, with Israeli raids and artillery hitting seven towns — the strikes the IDF had warned were coming.</p>
+        <p class="source-line">Al Jazeera — <a href="https://www.aljazeera.com/news/2026/9/4/israeli-strike-kills-two-in-southern-lebanon-amid-ongoing-escalation" target="_blank" rel="noopener">read the report</a></p>
+      </div>
+      <div class="lang-block he">
+        <span class="tag security">ביטחון</span>
+        <h2 class="headline">תקיפות ישראליות פגעו במחוזות נבטיה וצור, שניים נהרגו על אופנוע</h2>
+        <p class="summary">סוכנות הידיעות הרשמית של לבנון מדווחת כי תקיפה הרגה שניים בכפר רמאן ליד רכס עלי א-טאהר, ופשיטות וארטילריה ישראליות פגעו בשבעה יישובים — אלה התקיפות שעליהן הזהיר צה"ל.</p>
+        <p class="source-line">אל-ג'זירה — <a href="https://www.aljazeera.com/news/2026/9/4/israeli-strike-kills-two-in-southern-lebanon-amid-ongoing-escalation" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-time">04&nbsp;Sep<br>evening</div>
+      <div class="lang-block en">
+        <span class="tag diplomacy">Diplomacy</span>
+        <h2 class="headline">Netanyahu says overthrow of Iran's government is "within reach"</h2>
+        <p class="summary">The PM said toppling Iran's regime is Israel's central remaining task, calling it achievable as the US resumes strikes and Iran shows signs of weakness.</p>
+        <p class="source-line">RFE/RL — <a href="https://www.globalsecurity.org/wmd/library/news/iran/2026/09/iran-260903-rferl03.htm" target="_blank" rel="noopener">read the report</a></p>
+      </div>
+      <div class="lang-block he">
+        <span class="tag diplomacy">דיפלומטיה</span>
+        <h2 class="headline">נתניהו: הפלת המשטר באיראן "בהישג יד"</h2>
+        <p class="summary">ראש הממשלה אמר כי הפלת המשטר באיראן היא המשימה המרכזית הנותרת לישראל, וכינה זאת בר-השגה לנוכח חידוש התקיפות האמריקאיות וסימני חולשה איראניים.</p>
+        <p class="source-line">RFE/RL — <a href="https://www.globalsecurity.org/wmd/library/news/iran/2026/09/iran-260903-rferl03.htm" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-time">04&nbsp;Sep<br>Gaza</div>
+      <div class="lang-block en">
+        <span class="tag security">Security</span>
+        <h2 class="headline">IDF and Shin Bet eliminate Nukhba commander who led Oct. 7 attack on Sufa outpost</h2>
+        <p class="summary">The commander had been rebuilding Hamas's military capabilities and directing attacks on troops and civilians in violation of the ceasefire, the military said.</p>
+        <p class="source-line">VINnews — <a href="https://vinnews.com/2026/09/04/idf-isa-eliminate-hamas-nukhba-commander-who-led-oct-7-attack-on-sufa-outpost/" target="_blank" rel="noopener">read the report</a></p>
+      </div>
+      <div class="lang-block he">
+        <span class="tag security">ביטחון</span>
+        <h2 class="headline">צה"ל ושב"כ חיסלו מפקד ניצחבה שהוביל את פשיטת סופה ב-7 באוקטובר</h2>
+        <p class="summary">לפי הצבא, המפקד פעל לשיקום היכולות הצבאיות של חמאס וכיוון פיגועים נגד חיילים ואזרחים בניגוד להפסקת האש.</p>
+        <p class="source-line">VINnews — <a href="https://vinnews.com/2026/09/04/idf-isa-eliminate-hamas-nukhba-commander-who-led-oct-7-attack-on-sufa-outpost/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-time">04&nbsp;Sep<br>S. Lebanon</div>
+      <div class="lang-block en">
+        <span class="tag security">Security</span>
+        <h2 class="headline">IDF clears Hezbollah tunnels under key Ali al-Taher ridge</h2>
+        <p class="summary">Katz says troops cleared two decades-old underground complexes — command rooms, weapons stores, living quarters — that served as a Hezbollah command center; Israel says it will stay until Hezbollah disarms.</p>
+        <p class="source-line">Times of Israel — <a href="https://www.timesofisrael.com/idf-says-it-entered-cleared-hezbollahs-ali-taher-ridge-tunnels-ahead-of-demolition/" target="_blank" rel="noopener">read the report</a></p>
+      </div>
+      <div class="lang-block he">
+        <span class="tag security">ביטחון</span>
+        <h2 class="headline">צה"ל טיהר מנהרות חיזבאללה ברכס עלי א-טאהר</h2>
+        <p class="summary">כ"ץ: הכוחות טיהרו שני מתחמי מנהרות בני כעשרים שנה — חדרי פיקוד, מחסני נשק ומגורים — ששימשו כמרכז פיקוד של חיזבאללה; ישראל תישאר במקום עד לפירוק נשק הארגון.</p>
+        <p class="source-line">טיימס אוף ישראל — <a href="https://www.timesofisrael.com/idf-says-it-entered-cleared-hezbollahs-ali-taher-ridge-tunnels-ahead-of-demolition/" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-time">04&nbsp;Sep<br>West&nbsp;Bank</div>
+      <div class="lang-block en">
+        <span class="tag">West Bank</span>
+        <h2 class="headline">Settler attacks reported across three West Bank locations</h2>
+        <p class="summary">Farmland was torched near al-Mughayyir and a Palestinian convoy attacked en route to a condolence visit; tear gas and home raids hit Bedouin hamlets in the Jordan Valley.</p>
+        <p class="source-line">Times of Israel — <a href="https://www.timesofisrael.com/liveblog-september-04-2026/" target="_blank" rel="noopener">live blog</a></p>
+      </div>
+      <div class="lang-block he">
+        <span class="tag">הגדה המערבית</span>
+        <h2 class="headline">אלימות מתנחלים דווחה בשלושה אתרים בגדה המערבית</h2>
+        <p class="summary">שדות הוצתו ליד אל-מע'יר ושיירה פלסטינית הותקפה בדרכה לביקור ניחומים; גז מדמיע ופשיטות בתים פגעו ביישובים בדואים בבקעת הירדן.</p>
+        <p class="source-line">טיימס אוף ישראל — <a href="https://www.timesofisrael.com/liveblog-september-04-2026/" target="_blank" rel="noopener">בלוג חי</a></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="item-time">04&nbsp;Sep<br>Jerusalem</div>
+      <div class="lang-block en">
+        <span class="tag security">Security</span>
+        <h2 class="headline">Police shoot dead Palestinian man in Old City after alleged stabbing attempt</h2>
+        <p class="summary">Officers opened fire after the man allegedly tried to stab security forces near Jerusalem's Old City; no Israeli casualties were reported.</p>
+        <p class="source-line">Haaretz — <a href="https://www.haaretz.com/israel-news/israel-security/2026-09-04/ty-article-live/police-terrorist-neutralized-after-trying-to-attack-forces-in-jlem-old-city/000001a0-6a21-d1e9-ade0-fbf343520000" target="_blank" rel="noopener">read the report</a></p>
+      </div>
+      <div class="lang-block he">
+        <span class="tag security">ביטחון</span>
+        <h2 class="headline">המשטרה ירתה למוות פלסטיני בעיר העתיקה לאחר ניסיון דקירה</h2>
+        <p class="summary">השוטרים פתחו באש לאחר שהחשוד ניסה, לפי הדיווחים, לדקור כוחות ביטחון סמוך לעיר העתיקה בירושלים; לא דווח על נפגעים ישראלים.</p>
+        <p class="source-line">הארץ — <a href="https://www.haaretz.com/israel-news/israel-security/2026-09-04/ty-article-live/police-terrorist-neutralized-after-trying-to-attack-forces-in-jlem-old-city/000001a0-6a21-d1e9-ade0-fbf343520000" target="_blank" rel="noopener">הכתבה המלאה</a></p>
+      </div>
+    </article>
+
+  </div>
+
+  <footer>
+    <span>Sources: Haaretz, Times of Israel, Jerusalem Post, RFE/RL, VINnews</span>
+    <span id="clock"></span>
+  </footer>
+</div>
+
+<script>
+  function tick() {
+    var el = document.getElementById('clock');
+    if (el) {
+      el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
