@@ -321,9 +321,42 @@
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     color: var(--ink-dim);
-    padding-top: 3px;
     font-variant-numeric: tabular-nums;
   }
+
+  .item-lead {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .thumb svg {
+    width: 22px;
+    height: 22px;
+    stroke: white;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .thumb-security { background: var(--alert); }
+  .thumb-diplomacy { background: var(--diplo); }
+  .thumb-general { background: var(--accent); }
+  .thumb-ai { background: var(--ai); }
+  .thumb-estate { background: var(--estate); }
+  .thumb-finance { background: var(--finance); }
 
   .lang-block.en {
     padding-right: 12px;
@@ -432,7 +465,12 @@
   @media (max-width: 720px) {
     .col-heads { display: none; }
     .item { grid-template-columns: 1fr; gap: 10px; }
-    .item-time { order: -1; }
+    .item-lead {
+      order: -1;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
     .lang-block.en {
       padding-right: 0;
       border-right: none;
@@ -451,6 +489,34 @@
 </style>
 
 <div class="ambient"><span></span><span></span></div>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-security" viewBox="0 0 24 24">
+    <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/>
+  </symbol>
+  <symbol id="icon-diplomacy" viewBox="0 0 24 24">
+    <circle cx="7" cy="12" r="4"/>
+    <circle cx="17" cy="12" r="4"/>
+  </symbol>
+  <symbol id="icon-general" viewBox="0 0 24 24">
+    <path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/>
+    <circle cx="12" cy="9.5" r="2.4"/>
+  </symbol>
+  <symbol id="icon-ai" viewBox="0 0 24 24">
+    <circle cx="6" cy="7" r="2"/>
+    <circle cx="18" cy="7" r="2"/>
+    <circle cx="12" cy="17" r="2"/>
+    <path d="M7.7 8.2 10.3 15.4M16.3 8.2 13.7 15.4M8 7h8"/>
+  </symbol>
+  <symbol id="icon-estate" viewBox="0 0 24 24">
+    <path d="M4 21V10l4-3 4 3v11M12 21V6l4-3 4 3v18"/>
+    <path d="M4 21h16"/>
+  </symbol>
+  <symbol id="icon-finance" viewBox="0 0 24 24">
+    <path d="M4 19V13M9.5 19V9M15 19V15M20 19V6"/>
+    <path d="M4 19h16"/>
+  </symbol>
+</svg>
 
 <div class="wrap">
   <header>
@@ -488,7 +554,10 @@
     <div class="feed">
 
       <article class="item">
-        <div class="item-time">now<br>S.&nbsp;Lebanon</div>
+        <div class="item-lead">
+          <span class="thumb thumb-security"><svg><use href="#icon-security"></use></svg></span>
+          <div class="item-time">now<br>S.&nbsp;Lebanon</div>
+        </div>
         <div class="lang-block en">
           <span class="tag security">Security</span>
           <h2 class="headline">Israeli strikes hit Nabatieh and Tyre districts, killing two on a motorcycle</h2>
@@ -504,7 +573,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>evening</div>
+        <div class="item-lead">
+          <span class="thumb thumb-diplomacy"><svg><use href="#icon-diplomacy"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>evening</div>
+        </div>
         <div class="lang-block en">
           <span class="tag diplomacy">Diplomacy</span>
           <h2 class="headline">Netanyahu says overthrow of Iran's government is "within reach"</h2>
@@ -520,7 +592,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>Gaza</div>
+        <div class="item-lead">
+          <span class="thumb thumb-security"><svg><use href="#icon-security"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>Gaza</div>
+        </div>
         <div class="lang-block en">
           <span class="tag security">Security</span>
           <h2 class="headline">IDF and Shin Bet eliminate Nukhba commander who led Oct. 7 attack on Sufa outpost</h2>
@@ -536,7 +611,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>S. Lebanon</div>
+        <div class="item-lead">
+          <span class="thumb thumb-security"><svg><use href="#icon-security"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>S. Lebanon</div>
+        </div>
         <div class="lang-block en">
           <span class="tag security">Security</span>
           <h2 class="headline">IDF clears Hezbollah tunnels under key Ali al-Taher ridge</h2>
@@ -552,7 +630,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>West&nbsp;Bank</div>
+        <div class="item-lead">
+          <span class="thumb thumb-general"><svg><use href="#icon-general"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>West&nbsp;Bank</div>
+        </div>
         <div class="lang-block en">
           <span class="tag">West Bank</span>
           <h2 class="headline">Settler attacks reported across three West Bank locations</h2>
@@ -568,7 +649,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>Jerusalem</div>
+        <div class="item-lead">
+          <span class="thumb thumb-security"><svg><use href="#icon-security"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>Jerusalem</div>
+        </div>
         <div class="lang-block en">
           <span class="tag security">Security</span>
           <h2 class="headline">Police shoot dead Palestinian man in Old City after alleged stabbing attempt</h2>
@@ -591,7 +675,10 @@
     <div class="feed">
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>industry</div>
+        <div class="item-lead">
+          <span class="thumb thumb-ai"><svg><use href="#icon-ai"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>industry</div>
+        </div>
         <div class="lang-block en">
           <span class="tag ai">Models</span>
           <h2 class="headline">OpenAI begins staged rollout of GPT-6 Astra</h2>
@@ -607,7 +694,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">01&nbsp;Sep<br>industry</div>
+        <div class="item-lead">
+          <span class="thumb thumb-ai"><svg><use href="#icon-ai"></use></svg></span>
+          <div class="item-time">01&nbsp;Sep<br>industry</div>
+        </div>
         <div class="lang-block en">
           <span class="tag ai">Models</span>
           <h2 class="headline">Anthropic's Fable 5.1 reaches general availability</h2>
@@ -623,7 +713,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">27&nbsp;Aug<br>policy</div>
+        <div class="item-lead">
+          <span class="thumb thumb-general"><svg><use href="#icon-general"></use></svg></span>
+          <div class="item-time">27&nbsp;Aug<br>policy</div>
+        </div>
         <div class="lang-block en">
           <span class="tag">Security</span>
           <h2 class="headline">100+ AI firms, including OpenAI, Anthropic and Google, sign pact on rogue-AI defense</h2>
@@ -639,7 +732,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">Sep<br>industry</div>
+        <div class="item-lead">
+          <span class="thumb thumb-ai"><svg><use href="#icon-ai"></use></svg></span>
+          <div class="item-time">Sep<br>industry</div>
+        </div>
         <div class="lang-block en">
           <span class="tag ai">Models</span>
           <h2 class="headline">World Labs unveils Atlas, a text-image-video-3D generation model</h2>
@@ -655,7 +751,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">Sep<br>industry</div>
+        <div class="item-lead">
+          <span class="thumb thumb-ai"><svg><use href="#icon-ai"></use></svg></span>
+          <div class="item-time">Sep<br>industry</div>
+        </div>
         <div class="lang-block en">
           <span class="tag ai">Models</span>
           <h2 class="headline">Multiverse Computing releases Quasar 438B, Europe's top-scoring reasoning model</h2>
@@ -678,7 +777,10 @@
     <div class="feed">
 
       <article class="item">
-        <div class="item-time">2026<br>CBS&nbsp;data</div>
+        <div class="item-lead">
+          <span class="thumb thumb-estate"><svg><use href="#icon-estate"></use></svg></span>
+          <div class="item-time">2026<br>CBS&nbsp;data</div>
+        </div>
         <div class="lang-block en">
           <span class="tag estate">Market</span>
           <h2 class="headline">Annual housing index falls 2%, sharpest drop in eight years</h2>
@@ -694,7 +796,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">2026<br>pricing</div>
+        <div class="item-lead">
+          <span class="thumb thumb-estate"><svg><use href="#icon-estate"></use></svg></span>
+          <div class="item-time">2026<br>pricing</div>
+        </div>
         <div class="lang-block en">
           <span class="tag estate">Pricing</span>
           <h2 class="headline">Buyers gain negotiating room as homes sell below asking</h2>
@@ -710,7 +815,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">2026<br>Jerusalem</div>
+        <div class="item-lead">
+          <span class="thumb thumb-estate"><svg><use href="#icon-estate"></use></svg></span>
+          <div class="item-time">2026<br>Jerusalem</div>
+        </div>
         <div class="lang-block en">
           <span class="tag estate">Infrastructure</span>
           <h2 class="headline">Jerusalem's Green Line light rail set to open first section</h2>
@@ -733,7 +841,10 @@
     <div class="feed">
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>currency</div>
+        <div class="item-lead">
+          <span class="thumb thumb-finance"><svg><use href="#icon-finance"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>currency</div>
+        </div>
         <div class="lang-block en">
           <span class="tag finance">Currency</span>
           <h2 class="headline">Shekel hits 30-year high against the dollar</h2>
@@ -749,7 +860,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">04&nbsp;Sep<br>markets</div>
+        <div class="item-lead">
+          <span class="thumb thumb-finance"><svg><use href="#icon-finance"></use></svg></span>
+          <div class="item-time">04&nbsp;Sep<br>markets</div>
+        </div>
         <div class="lang-block en">
           <span class="tag finance">Markets</span>
           <h2 class="headline">TA-125 closes at 4,194, up nearly 33% year-on-year</h2>
@@ -765,7 +879,10 @@
       </article>
 
       <article class="item">
-        <div class="item-time">2026<br>outlook</div>
+        <div class="item-lead">
+          <span class="thumb thumb-finance"><svg><use href="#icon-finance"></use></svg></span>
+          <div class="item-time">2026<br>outlook</div>
+        </div>
         <div class="lang-block en">
           <span class="tag finance">Growth</span>
           <h2 class="headline">Bank of Israel, IMF see growth outpacing every G7 economy</h2>
