@@ -121,6 +121,84 @@
     .ambient span { animation: none; }
   }
 
+  .ticker-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: stretch;
+    background: var(--ink);
+    color: var(--bg);
+    overflow: hidden;
+  }
+
+  .ticker-label {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--alert);
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .ticker-label .ticker-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    animation: pulse 2.2s ease-out infinite;
+  }
+
+  .ticker-viewport {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    animation: ticker-scroll 55s linear infinite;
+    will-change: transform;
+  }
+
+  .ticker-track span {
+    font-size: 12.5px;
+    padding: 0 10px;
+  }
+
+  .ticker-track .ticker-sep {
+    color: var(--accent);
+    opacity: 0.8;
+  }
+
+  .ticker-track .ticker-he {
+    font-family: 'Assistant', sans-serif;
+    direction: rtl;
+    unicode-bidi: embed;
+  }
+
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .ticker-clone { display: flex; align-items: center; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+    .ticker-clone { display: none; }
+  }
+
   .wrap {
     max-width: 960px;
     margin: 0 auto;
@@ -450,6 +528,61 @@
     outline-offset: 2px;
   }
 
+  .market-pulse {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+
+  .pulse-card {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 14px 16px 10px;
+  }
+
+  .pulse-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+  }
+
+  .pulse-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+
+  .pulse-value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pulse-value.up { color: var(--accent); }
+  .pulse-value.down { color: var(--alert); }
+
+  .pulse-chart {
+    width: 100%;
+    height: 52px;
+    display: block;
+    overflow: visible;
+  }
+
+  .pulse-note {
+    font-size: 10.5px;
+    color: var(--ink-dim);
+    margin-top: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .market-pulse { grid-template-columns: 1fr; }
+  }
+
   footer {
     margin-top: 30px;
     padding-top: 16px;
@@ -518,6 +651,15 @@
   </symbol>
 </svg>
 
+<div class="ticker-bar">
+  <span class="ticker-label"><span class="ticker-dot"></span> Breaking</span>
+  <div class="ticker-viewport">
+    <div class="ticker-track" id="ticker-track">
+      <span>Israeli strikes on Nabatieh area kill four, wound 20, Lebanon says</span><span class="ticker-sep">•</span><span class="ticker-he">תקיפות ישראליות באזור נבטיה הרגו ארבעה ופצעו 20, לפי לבנון</span><span class="ticker-sep">•</span><span>Anthropic's Claude formalizes a complete proof of Fermat's Last Theorem</span><span class="ticker-sep">•</span><span class="ticker-he">ה-Claude של אנתרופיק הפך להוכחה פורמלית מלאה את המשפט האחרון של פרמה</span><span class="ticker-sep">•</span><span>Annual housing index falls 2%, sharpest drop in eight years</span><span class="ticker-sep">•</span><span class="ticker-he">מדד הדיור השנתי ירד ב-2%, הירידה החדה ביותר מזה שמונה שנים</span><span class="ticker-sep">•</span><span>Shekel hits 30-year high against the dollar</span><span class="ticker-sep">•</span><span class="ticker-he">השקל בשיא של 30 שנה מול הדולר</span><span class="ticker-sep">•</span>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <header>
     <div class="brand">
@@ -526,7 +668,7 @@
     </div>
     <div class="meta">
       Last update<br>
-      <strong id="updated-at">15:39 UTC · 06 Sep</strong><br>
+      <strong id="updated-at">19:52 UTC · 06 Sep</strong><br>
       <span id="ago"></span>
     </div>
   </header>
@@ -914,6 +1056,35 @@
 
   <!-- FINANCE -->
   <section class="panel" id="panel-finance">
+
+    <div class="market-pulse">
+      <div class="pulse-card">
+        <div class="pulse-head">
+          <span class="pulse-label">USD/ILS</span>
+          <span class="pulse-value up">2.99 ▼</span>
+        </div>
+        <svg class="pulse-chart" viewBox="0 0 200 60" preserveAspectRatio="none">
+          <line x1="10" y1="50" x2="190" y2="50" stroke="var(--rule)" stroke-width="1"/>
+          <path d="M10,10 L55,30 L100,41.5 L145,50 L190,45.5" fill="none" stroke="var(--finance)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="190" cy="45.5" r="3.5" fill="var(--finance)"/>
+        </svg>
+        <p class="pulse-note">Shekels per dollar, Apr '25 → now — declining means the shekel is strengthening</p>
+      </div>
+      <div class="pulse-card">
+        <div class="pulse-head">
+          <span class="pulse-label">TA-125 YTD</span>
+          <span class="pulse-value up">+16% ▲</span>
+        </div>
+        <svg class="pulse-chart" viewBox="0 0 200 60" preserveAspectRatio="none">
+          <line x1="10" y1="50" x2="190" y2="50" stroke="var(--rule)" stroke-width="1"/>
+          <path d="M10,50 L55,28.8 L100,10 L145,21.8 L190,12.4" fill="none" stroke="var(--finance)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="190" cy="12.4" r="3.5" fill="var(--finance)"/>
+        </svg>
+        <p class="pulse-note">Percent change since Jan 1, 2026</p>
+      </div>
+    </div>
+    <p class="pulse-note" style="margin: -14px 0 22px;">Approximate trend built from recent reporting, not a live trading feed · מגמה משוערת מדיווחים אחרונים, לא נתון מסחר חי</p>
+
     <div class="feed">
 
       <article class="item">
@@ -1048,4 +1219,13 @@
   });
 
   moveIndicator(tabs[0]);
+
+  var tickerTrack = document.getElementById('ticker-track');
+  if (tickerTrack) {
+    var clone = document.createElement('span');
+    clone.className = 'ticker-clone';
+    clone.setAttribute('aria-hidden', 'true');
+    clone.innerHTML = tickerTrack.innerHTML;
+    tickerTrack.appendChild(clone);
+  }
 </script>
